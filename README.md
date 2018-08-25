@@ -127,23 +127,31 @@ This “name” is the “slug” that you are probably familiar with. For examp
 
 *However,* if you would rather not do all that interactively, your _second_ option is to use the following arguments to `new-dual-repo.sh`.
 
-Most importantly, you can specify the name of the repo like so:
+Example:
+
+	new-dual-repo.sh --name "my-new-repo" -d "This is a new project I'm working on."
+
+There are only a few arguments possible:
+
+**Most importantly,** you can specify the _name_ of the repo like so:
 
 	--name "my-new-repo"
 
 _Note that “my-new-repo” must **not** be in use already on either your GitHub account or your Bitbucket account, or else this script will fail._
 
-Second-most-importantly, if you want to specify the description without being prompted, you can use with `-d` or `--description`, like this:
+**Second-most-importantly,** if you want to specify the description without being prompted, you can use with `-d` or `--description`, like this:
 
 	-d "This is my short description"
+
+or
 
 	--description "This is my short description"
 
 Note that your description _must_ be enclosed in quotes.
 
-**Both a name and a description are considered to be required by the script, and it will not continue until you set both.**
+_Both a name and a description are considered to be required by the script, and it will not continue until you set both._
 
-Finally, and completely optionally, you can also explicitly set the repo to public or private by using either
+**Finally, and completely optionally,** you can also explicitly set the repo to public or private by using either
 
 	--public
 

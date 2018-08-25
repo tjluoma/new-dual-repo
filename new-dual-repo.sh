@@ -104,6 +104,9 @@ then
 	fi
 fi
 
+	# remove any spaces in the repo name because that’s a no-no
+REPO_NAME=$(echo "$REPO_NAME" | tr -s ' ' '-')
+
 if [ "$DESCRIPTION" = "" -o "$DESCRIPTION" = "Description to come." ]
 then
 	read "?Short Description of '$REPO_NAME': " DESCRIPTION
@@ -216,7 +219,7 @@ git remote -v || die "git remote -v failed"
 ##
 ## if we get here everything went according to plan
 
-if [[ -e "/Applications/${GIT_APP}.app" ]]
+if [ -e "/Applications/${GIT_APP}.app" -o -e "$HOME/Applications/${GIT_APP}.app" ]
 then
 
 	echo "$NAME: Phew. Everything seemed to work. Adding $PWD to ${GIT_APP} now."

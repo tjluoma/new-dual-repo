@@ -171,7 +171,7 @@ But remember you can always override the default by using either `--public` or `
 
 ## Questions?
 
-Ask away. You can find me [@tjluoma](http://twitter.com/tjluoma) on Twitter, or create an issue on Bitbucket or GitHub.
+Ask away. You can find me [@tjluoma](http://twitter.com/tjluoma) on Twitter, or create an issue on [Bitbucket](https://bitbucket.org/tjluoma/new-dual-repo/issues/new) or [GitHub](https://github.com/tjluoma/new-dual-repo/issues/new).
 
 ## License
 

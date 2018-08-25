@@ -80,7 +80,7 @@ Then look for this line in the script:
 
 and edit accordingly.
 
-_If you _aren’t_ using 2FA, I’m sure you can probably adapt this script to your needs, but I would sincerely recommend [learning about two-factor authentication on GitHub](https://help.github.com/articles/about-two-factor-authentication/). It’s easy to setup and really doesn’t make things much more difficult, and it’s a lot safer._
+_If you **aren’t** using 2FA, I’m sure you can probably adapt this script to your needs, but I would sincerely recommend [learning about two-factor authentication on GitHub](https://help.github.com/articles/about-two-factor-authentication/). It’s easy to setup and really doesn’t make things much more difficult, and it’s a lot safer._
 
 ### BITBUCKET_APP_PASSWORD
 

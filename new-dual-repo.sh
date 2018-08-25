@@ -98,7 +98,7 @@ if [[ "$REPO_NAME" == "" ]]
 then
 	if [ "$#" = "0" ]
 	then
-		read "?What should the new repo be called (slug name): " REPO_NAME
+		REPO_NAME=${PWD##*/}
 	else
 		REPO_NAME="$@"
 	fi

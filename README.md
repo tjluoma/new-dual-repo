@@ -105,9 +105,9 @@ and make sure it’s executable:
 
 Once you have it installed (and configured, as explained above), just `cd` into whatever directory you want to use as a new “dual repo”:
 
-	mkdir ~/git/my-new-repo
+	mkdir ~/repos/tjluoma/my-new-repo
 
-	cd ~/git/my-new-repo
+	cd ~/repos/tjluoma/my-new-repo
 
 Once you are there, you have two choices.
 
@@ -121,7 +121,7 @@ If you do this, the script will:
 
 * prompt you to create a brief description of the repo
 
-* prompt you to name the repo
+* use the name of the current directory for the repository name
 
 This “name” is the “slug” that you are probably familiar with. For example, this repo name is “new-dual-repo”.
 
@@ -133,7 +133,7 @@ Example:
 
 There are only a few arguments possible:
 
-**Most importantly,** you can specify the _name_ of the repo like so:
+**Most importantly,** you can override the _name_ of the repo like so:
 
 	--name "my-new-repo"
 

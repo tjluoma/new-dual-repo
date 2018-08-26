@@ -105,6 +105,7 @@ then
 fi
 
 	# remove any spaces in the repo name because that’s a no-no
+	# ¿ @TODO ? - should we automatically lowercase the REPO_NAME? That seems to be a convention too.
 REPO_NAME=$(echo "$REPO_NAME" | tr -s ' ' '-')
 
 if [ "$DESCRIPTION" = "" -o "$DESCRIPTION" = "Description to come." ]

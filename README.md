@@ -179,5 +179,5 @@ No warranty provided, either expressly or implicitly. Use entirely at your own r
 
 Feel free to take it and adapt as you’d like. A link back to the original is always nice, but that’s all I ask.
 
-
+_fin_
 

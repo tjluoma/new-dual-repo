@@ -1,0 +1,25 @@
+  # Change this to your favorite Git GUI app
+  GIT_APP='Sourcetree'
+
+  GITHUB_USERNAME='CHANGE_TO_YOUR_GITHUB_USERNAME'
+
+  BITBUCKET_USERNAME='CHANGE_TO_YOUR_BITBUCKET_USERNAME'
+
+  # Create at: https://github.com/settings/tokens
+  GITHUB_PERSONAL_ACCESS_TOKEN="REPLACE_THIS_WITH_THE_REAL_VALUE"
+
+  # Create at: https://bitbucket.org/account/user/$BITBUCKET_USERNAME/app-passwords
+  BITBUCKET_APP_PASSWORD='REPLACE_THIS_WITH_THE_REAL_VALUE'
+
+  # set this to PRIVATE='true' to make private repos by default.
+  #
+  # Notes:
+  # 1. you must have a paid GitHub account to create private repos
+  #
+  # 2. if you want to make your repos private by default, uncomment PRIVATE='true' AND
+  #    comment out PRIVATE='false' below
+
+  # PRIVATE='true'
+  PRIVATE='false'
+
+  LOGFILE_DIR="$HOME/Desktop"

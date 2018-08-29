@@ -98,6 +98,9 @@ Click “Create App Password” and then add it to the script where you see this
 
 ## “How do I use the script?”
 
+### Basic Setup
+#### For more advanced setup, please see [Advanced Setup](#advanced-setup)
+
 `new-dual-repo.sh` is designed to be fairly easy to use. Save the script somewhere in your `$PATH` such as `/usr/local/bin/new-dual-repo.sh`
 and make sure it’s executable:
 
@@ -172,6 +175,29 @@ But remember you can always override the default by using either `--public` or `
 ## Questions?
 
 Ask away. You can find me [@tjluoma](http://twitter.com/tjluoma) on Twitter, or create an issue on [Bitbucket](https://bitbucket.org/tjluoma/new-dual-repo/issues/new) or [GitHub](https://github.com/tjluoma/new-dual-repo/issues/new).
+
+## Advanced Setup
+
+The following is recommended for advanced users. If something looks too complicated or you don't understand it, maybe
+stick with the [Basic Setup](#basic-setup) above.
+
+Copy config/settings.example to config/settings and modify that file with your individual values. This leaves the new-dual-repo.sh file unchanged and puts all your settings in an untracked file.
+
+	$ cp config/settings.example config/settings
+
+The config/settings file is ignored in this repo to help avoid comitting sensitive information to a potentially public repository.
+
+Leave the script and all the files in its repository directory. Create a symlink somewhere in your path, I generally omit the .sh extension when creating symlinks.
+
+	$ ln -s $HOME/repos/tjluoma/new-dual-repo/new-dual-repo.sh /usr/local/bin/new-dual-repo
+
+You probably want to fork this repo which will allow you to commit any modifications you make to your own repo. If you have a change or changes that have universal appeal, consider making a pull request from your forked repo to this repo.
+
+Logs are created for the curl operations that communicate with Github and Bitbucket, by default these log files are created on your desktop, this location can be changed by changing the LOGFILE_DIR variable in either the script or the config/settings file.
+
+If you have specifics that you want in every .gitignore, modify the config/gitignore file.
+
+Please note that OS specific files and or editor/IDE specific files are best handled by a global gitignore on the system that creates them. [This Github article](https://help.github.com/articles/ignoring-files/#create-a-global-gitignore) has good information on that topic. As well, [gitignore.io](https://www.gitignore.io) is a great resource that can generate ignore file lists for your specific OS or editor or IDE.
 
 ## License
 

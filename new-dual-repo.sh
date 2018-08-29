@@ -7,6 +7,10 @@
 
 NAME="$0:t:r"
 
+
+ROOT_DIR="$(dirname $(greadlink -f "$0"))" # Works on OS X (macos)
+# ROOT_DIR="$(dirname $(readlink -f "$0"))" # Works on most flavors of Linux
+
 if [[ -e "$HOME/.path" ]]
 then
 	source "$HOME/.path"
@@ -15,10 +19,13 @@ else
 fi
 
 
-if [[ -e "$HOME/.config/github-and-bitbucket.txt" ]]
+if [[ -e "$ROOT_DIR/config/settings" ]]
 then
 		# You can define all the variables below in this file if you prefer
-	source "$HOME/.config/github-and-bitbucket.txt"
+		# A settings.example is provided in the config directory
+		# $cp config/settings.example config/settings
+		# will copy the .example file to just settings which you can then edit
+	source "$ROOT_DIR/config/settings"
 
 else
 		# Or set them here if you prefer
@@ -45,7 +52,7 @@ else
 	#
 	#			PRIVATE='true'
 	#
-	#	   to the "$HOME/.config/github-and-bitbucket.txt" file
+	#	   to the "config/settings" file
 	#  	   and you can maintain your default preference regardless of
 	#	   what the default is in the official git repo for new-dual-repo.sh
 	PRIVATE='false'
@@ -288,24 +295,21 @@ git commit -m "Added bare README"	|| die "git commit failed"
 
 if [[ ! -e .gitignore ]]
 then
-	# create a sane .gitignore for Mac users
-
-cat <<EOINPUT > .gitignore
-.DS_Store
-.DS_Store?
-.Spotlight-V100
-.Trashes
-Icon
-Icon*
-EOINPUT
-
+	# create a .gitignore
+	if [[ -e "$ROOT_DIR/config/gitignore" ]]
+	then
+		gitignore=$(<"$ROOT_DIR/config/gitignore")
+		echo "$gitignore" > .gitignore
+	else
+		echo "# ignore these files (1 file or pattern per line)\n" > .gitignore
+	fi
 fi
 
 [[ -s .gitignore ]] || die "Failed to create .gitignore"
 
 git add .gitignore || die "Failed to 'git add .gitignore'"
 
-git commit -m "Added .gitignore" || die "Failed to commit .gitignore"
+git commit -m "Adds .gitignore" || die "Failed to commit .gitignore"
 
 git remote add origin "git@github.com:${GITHUB_USERNAME}/${REPO_NAME}.git" || die "git remote add origin failed "
 

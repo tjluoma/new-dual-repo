@@ -14,19 +14,6 @@ else
 	PATH='/usr/local/scripts:/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin'
 fi
 
-	# set this to PRIVATE='true' to make private repos by default.
-	#
-	# Notes:
-	#	1. you must have a paid GitHub account to create private repos
-	#
-	#	2. if you want to make your repos private by default, add a line
-	#
-	#			PRIVATE='true'
-	#
-	#	   to the "$HOME/.config/github-and-bitbucket.txt" file
-	#  	   and you can maintain your default preference regardless of
-	#	   what the default is in the official git repo for new-dual-repo.sh
-PRIVATE='false'
 
 if [[ -e "$HOME/.config/github-and-bitbucket.txt" ]]
 then
@@ -49,6 +36,19 @@ else
 	# Create at: https://bitbucket.org/account/user/$BITBUCKET_USERNAME/app-passwords
 	BITBUCKET_APP_PASSWORD='REPLACE_THIS_WITH_THE_REAL_VALUE'
 
+	# set this to PRIVATE='true' to make private repos by default.
+	#
+	# Notes:
+	#	1. you must have a paid GitHub account to create private repos
+	#
+	#	2. if you want to make your repos private by default, add a line
+	#
+	#			PRIVATE='true'
+	#
+	#	   to the "$HOME/.config/github-and-bitbucket.txt" file
+	#  	   and you can maintain your default preference regardless of
+	#	   what the default is in the official git repo for new-dual-repo.sh
+	PRIVATE='false'
 fi
 
 zmodload zsh/datetime
@@ -92,6 +92,7 @@ do
 
 		--name)
 				shift
+				USE_DIRNAME_AS_REPO_NAME='no'
 				REPO_NAME="$1"
 				shift
 		;;
@@ -109,22 +110,111 @@ if [[ "$REPO_NAME" == "" ]]
 then
 	if [ "$#" = "0" ]
 	then
+		USE_DIRNAME_AS_REPO_NAME='yes'
 		REPO_NAME=${PWD##*/}
 	else
+		USE_DIRNAME_AS_REPO_NAME='no'
 		REPO_NAME="$@"
 	fi
 fi
 
-	# remove any spaces in the repo name because that’s a no-no
-	# ¿ @TODO ? - should we automatically lowercase the REPO_NAME? That seems to be a convention too.
-REPO_NAME=$(echo "$REPO_NAME" | tr -s ' ' '-')
+## 2018-08-29 - Bitbucket has more stringent requirements for REPO_NAME (aka "slugs") than GitHub does.
+#
+# For example, attempting to create a $REPO_NAME with a single capital letter causes Bitbucket to fail with this error:
+#
+# 	"Invalid slug. Slugs must be lowercase, alphanumerical, and may also contain underscores, dashes, or dots."
+#
+# Therefore, we need to make sure that '$REPO_NAME' is only those things:
+
+REPO_NAME_REFORMATTED=$(echo "${REPO_NAME}" \
+	| tr -s ' ' '-' \
+	| tr "[:upper:]" "[:lower:]" \
+	| tr -dc '[:alnum:]-_.' \
+	| sed 's#-*$##g' \
+	)
+
+if [[ "$REPO_NAME_REFORMATTED" != "${REPO_NAME}" ]]
+then
+	# If we get here, there must have been some illegal characters in the recommended REPO_NAME
+
+cat <<EOINPUT
+
+$NAME: '${REPO_NAME}' cannot be used as the name for your git repo.
+
+	Bitbucket requires that repo names be lowercase, alphanumerical, and may also contain underscores, dashes, or dots.
+
+	You have 3 options:
+
+	1) If you press 'Enter' ( ⏎ ), the repo name will be changed to: '${REPO_NAME_REFORMATTED}'.
+
+	2) If you want to chooe a new '\$REPO_NAME' yourself, enter 'R' or 'r' (for 'Rename')
+
+	3) If you do NOT want to continue at all, simply press 'Control-C' (⌃ C) to exit.
+
+EOINPUT
+
+	read "?$NAME: press 'Enter' to use the new name, 'R' or 'r' to Rename, or 'Control-C' to exit:  " ANSWER
+
+	case "$ANSWER" in
+		R*|R*|2*)
+
+				read "?What would you like the new '\$REPO_NAME' to be? " NEW_REPO_NAME
+
+					# Rather than loop through what we just did again to check the
+					# new input, let's simply call the script again, with the
+					# new repo name as an --name argument:
+				exec "$0" $@ --name "$NEW_REPO_NAME"
+
+				exit 0
+		;;
+
+	esac
+
+	# If we get here, then the user has opted to use our suggest rename of $REPO_NAME
+
+		# update the variable $REPO_NAME to use the newly reformatted version of itself
+	REPO_NAME="${REPO_NAME_REFORMATTED}"
+
+	if [[ "$USE_DIRNAME_AS_REPO_NAME" == "yes" ]]
+	then
+		# if the user did not specify the original REPO_NAME, but rather we extrapolated
+		# it from the name of the directory we are in, then we should offer to rename
+		# the directory we are in to match the new, reformatted $REPO_NAME,
+		# but only if we can do so without overwriting an existing file/folder
+
+		SAFE_FOLDER_NAME="$PWD:h/$REPO_NAME_REFORMATTED"
+
+		if [[ ! -e "$SAFE_FOLDER_NAME" ]]
+		then
+
+			echo "\n${NAME}: One last question:\n	Do you want to rename the current folder '$PWD' to"
+			echo "	'${SAFE_FOLDER_NAME}' to match the new, reformatted git repo name?\n"
+
+			read "?	Type 'n' followed by the Enter / Return ⏎ key to NOT rename the folder. Any other input will rename the folder: " ANSWER
+
+			case "$ANSWER" in
+				N*|n*)
+					echo "$NAME: Ok, will _not_ rename '$PWD'."
+				;;
+
+				*)
+					if [[ -e "$SAFE_FOLDER_NAME" ]]
+					then
+						echo " ⚠️ $NAME: Sorry, I cannot rename '$PWD' to '$SAFE_FOLDER_NAME' because '$SAFE_FOLDER_NAME' already exists."
+					else
+						mv -v "$PWD" "$SAFE_FOLDER_NAME" || echo " ⚠️ $NAME: Failed to rename '$PWD' to '$SAFE_FOLDER_NAME'."
+					fi
+				;;
+
+			esac
+		fi
+	fi
+fi
 
 if [ "$DESCRIPTION" = "" -o "$DESCRIPTION" = "Description to come." ]
 then
 	read "?Short Description of '$REPO_NAME': " DESCRIPTION
 fi
-
-[[ "$REPO_NAME" == "" ]] && die "\$REPO_NAME is empty"
 
 ########################################################################################################################
 ## BITBUCKET SECTION - START

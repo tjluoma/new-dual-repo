@@ -14,6 +14,20 @@ else
 	PATH='/usr/local/scripts:/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin'
 fi
 
+	# set this to PRIVATE='true' to make private repos by default.
+	#
+	# Notes:
+	#	1. you must have a paid GitHub account to create private repos
+	#
+	#	2. if you want to make your repos private by default, add a line
+	#
+	#			PRIVATE='true'
+	#
+	#	   to the "$HOME/.config/github-and-bitbucket.txt" file
+	#  	   and you can maintain your default preference regardless of
+	#	   what the default is in the official git repo for new-dual-repo.sh
+PRIVATE='false'
+
 if [[ -e "$HOME/.config/github-and-bitbucket.txt" ]]
 then
 		# You can define all the variables below in this file if you prefer
@@ -34,6 +48,7 @@ else
 
 	# Create at: https://bitbucket.org/account/user/$BITBUCKET_USERNAME/app-passwords
 	BITBUCKET_APP_PASSWORD='REPLACE_THIS_WITH_THE_REAL_VALUE'
+
 fi
 
 zmodload zsh/datetime
@@ -47,10 +62,6 @@ GITHUB_CURL_LOG="$HOME/Desktop/$NAME.github-api-response.$TIME.log"
 BITBUCKET_CURL_LOG="$HOME/Desktop/$NAME.bitbucket-api-response.$TIME.log"
 
 DESCRIPTION='Description to come.'
-
-	# set this to 'true' to make private repos by default.
-	# note that you must have a paid GitHub account to create private repos
-PRIVATE='false'
 
 function die
 {

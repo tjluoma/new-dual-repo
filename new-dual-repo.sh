@@ -56,6 +56,8 @@ else
 	#  	   and you can maintain your default preference regardless of
 	#	   what the default is in the official git repo for new-dual-repo.sh
 	PRIVATE='false'
+
+	LOGFILE_DIR="$HOME/Desktop"
 fi
 
 zmodload zsh/datetime
@@ -64,9 +66,9 @@ TIME=`strftime "%Y-%m-%d--%H.%M.%S" "$EPOCHSECONDS"`
 
 function timestamp { strftime "%Y-%m-%d--%H.%M.%S" "$EPOCHSECONDS" }
 
-GITHUB_CURL_LOG="$HOME/Desktop/$NAME.github-api-response.$TIME.log"
+GITHUB_CURL_LOG="$LOGFILE_DIR/$NAME.github-api-response.$TIME.log"
 
-BITBUCKET_CURL_LOG="$HOME/Desktop/$NAME.bitbucket-api-response.$TIME.log"
+BITBUCKET_CURL_LOG="$LOGFILE_DIR/$NAME.bitbucket-api-response.$TIME.log"
 
 DESCRIPTION='Description to come.'
 

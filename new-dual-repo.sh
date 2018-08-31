@@ -7,7 +7,8 @@
 
 NAME="$0:t:r"
 
-ROOT_DIR="$HOME/.config/new-dual-repo"
+	# ROOT_DIR is the directory where this script is found
+ROOT_DIR="$0:h"
 
 if [[ -e "$HOME/.path" ]]
 then
@@ -16,7 +17,13 @@ else
 	PATH='/usr/local/scripts:/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin'
 fi
 
-if [[ -e "$ROOT_DIR/settings" ]]
+
+if [[ -e "$HOME/.config/github-and-bitbucket.txt" ]]
+then
+		# if the original file exists, use it
+	source "$HOME/.config/github-and-bitbucket.txt"
+
+elif [[ -e "$ROOT_DIR/settings" ]]
 then
 		# You can define all the variables below in this file if you prefer
 		# A settings.example is provided in the config directory

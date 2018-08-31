@@ -7,9 +7,7 @@
 
 NAME="$0:t:r"
 
-
-ROOT_DIR="$(dirname $(greadlink -f "$0"))" # Works on OS X (macos)
-# ROOT_DIR="$(dirname $(readlink -f "$0"))" # Works on most flavors of Linux
+ROOT_DIR="$HOME/.config/new-dual-repo"
 
 if [[ -e "$HOME/.path" ]]
 then
@@ -18,14 +16,13 @@ else
 	PATH='/usr/local/scripts:/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin'
 fi
 
-
-if [[ -e "$ROOT_DIR/config/settings" ]]
+if [[ -e "$ROOT_DIR/settings" ]]
 then
 		# You can define all the variables below in this file if you prefer
 		# A settings.example is provided in the config directory
 		# $cp config/settings.example config/settings
 		# will copy the .example file to just settings which you can then edit
-	source "$ROOT_DIR/config/settings"
+	source "$ROOT_DIR/settings"
 
 else
 		# Or set them here if you prefer
@@ -298,9 +295,9 @@ git commit -m "Added bare README"	|| die "git commit failed"
 if [[ ! -e .gitignore ]]
 then
 	# create a .gitignore
-	if [[ -e "$ROOT_DIR/config/gitignore" ]]
+	if [[ -e "$ROOT_DIR/gitignore" ]]
 	then
-		gitignore=$(<"$ROOT_DIR/config/gitignore")
+		gitignore=$(<"$ROOT_DIR/gitignore")
 		echo "$gitignore" > .gitignore
 	else
 		echo "# ignore these files (1 file or pattern per line)\n" > .gitignore
